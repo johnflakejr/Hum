@@ -17,7 +17,14 @@ else()
   set(SDL2_IMAGE_LIBRARY /usr/lib/x86_64-linux-gnu/libSDL2_image-2.0.so)
 endif()
 
-set(SOURCE_FILES src/main.cpp)
+set(HEADER_FILES 
+  include/GameEngine.hpp
+)
+
+set(SOURCE_FILES 
+  src/main.cpp 
+  src/GameEngine.cpp
+)
 
 include_directories(${SDL2_INCLUDE_DIR})
 add_executable(Hum_Game ${SOURCE_FILES} ${HEADER_FILES})
