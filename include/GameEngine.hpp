@@ -9,11 +9,12 @@ class GameEngine {
   SDL_Renderer * game_renderer;
 
   void game_loop();
-
+  bool present_static_screen(std::string);
 
   public: 
     bool initialize_sdl();
     void play();
+    void shutdown_sdl();
   
 };
 

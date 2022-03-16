@@ -58,6 +58,36 @@ bool GameEngine::initialize_sdl() {
 
 }
 
+/**
+ * @brief Show the start screen to the user.  Proceed when a key is pressed. 
+ * 
+ */
+bool GameEngine::present_static_screen(std::string path) {
+
+  SDL_Surface * temp = IMG_Load(path.c_str());
+  SDL_Texture * start_screen_texture = SDL_CreateTextureFromSurface(game_renderer, temp);
+  SDL_Event e;
+  
+  SDL_RenderClear(game_renderer);
+  SDL_RenderCopy(game_renderer, start_screen_texture, NULL, NULL);
+  SDL_RenderPresent(game_renderer);
+  bool show_screen = true;
+
+  while(show_screen) {
+    while (SDL_PollEvent(&e) != 0) {
+      if (SDL_QUIT == e.type) {
+        return false;
+      } else if (SDL_KEYDOWN == e.type) {
+        show_screen = false;
+      }
+    }
+  }
+
+  SDL_DestroyTexture(start_screen_texture);
+  start_screen_texture = NULL;
+  temp = NULL;
+  return true;
+}
 
 
 /**
@@ -65,6 +95,13 @@ bool GameEngine::initialize_sdl() {
  */
 void GameEngine::play() {
 
+  if (!present_static_screen("./assets/first_screen.png")){
+    return;
+  }
+
+  if (!present_static_screen("./assets/second_screen.png")){
+    return;
+  }
   bool game_over = false;
   int step_delay = 2000;
   SDL_Event e;
@@ -83,12 +120,24 @@ void GameEngine::play() {
 
 
     SDL_RenderClear(game_renderer);
+    //renderObjects
+    //checkevents
     SDL_RenderPresent(game_renderer);
     SDL_Delay(step_delay);
   }
+}
 
+/**
+ * @brief destroy GameEngine variables and shutdown SDL.
+ * 
+ */
+void GameEngine::shutdown_sdl() {
   SDL_DestroyRenderer(game_renderer);
+  game_renderer = NULL;
+
   SDL_DestroyWindow(game_window);
+  game_window = NULL;
+
   IMG_Quit();
   SDL_Quit();
 }
