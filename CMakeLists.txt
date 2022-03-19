@@ -19,11 +19,13 @@ endif()
 
 set(HEADER_FILES 
   include/GameEngine.hpp
+  include/Sprite.hpp
 )
 
 set(SOURCE_FILES 
   src/main.cpp 
   src/GameEngine.cpp
+  src/Sprite.cpp
 )
 
 include_directories(${SDL2_INCLUDE_DIR})
