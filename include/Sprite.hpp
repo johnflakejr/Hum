@@ -21,7 +21,9 @@ class Sprite {
 
     //All sprites have src/dest rectangles, and all sprites are renderable:
     void set_dst_rect(SDL_Rect);
+    void set_dst_rect(int,int,int,int);
     void set_src_rect(SDL_Rect);
+    void set_src_rect(int,int,int,int);
     void set_texture(SDL_Texture *);
     void render(SDL_Renderer *);
 

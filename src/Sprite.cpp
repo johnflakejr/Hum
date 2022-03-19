@@ -13,6 +13,23 @@ void Sprite::set_dst_rect(SDL_Rect r) {
 }
 
 /**
+ * @brief Overloaded method for setting the rect directly.
+ * 
+ * @param x 
+ * @param y 
+ * @param w 
+ * @param h 
+ */
+void Sprite::set_dst_rect(int x, int y, int w, int h) {
+  if (NULL != dst_rect) {
+    delete dst_rect;
+  }
+
+  SDL_Rect temp = {x,y,w,h};
+  dst_rect = new SDL_Rect(temp);
+}
+
+/**
  * @brief Set the source rectangle for the sprite.
  * 
  * This is the rectangle where the sprite is grabbed
@@ -23,6 +40,24 @@ void Sprite::set_dst_rect(SDL_Rect r) {
 void Sprite::set_src_rect(SDL_Rect r) {
   src_rect = new SDL_Rect(r);
 }
+
+/**
+ * @brief Overloaded method for setting the rect directly.
+ * 
+ * @param x 
+ * @param y 
+ * @param w 
+ * @param h 
+ */
+void Sprite::set_src_rect(int x, int y, int w, int h) {
+  if (NULL != src_rect) {
+    delete src_rect;
+  }
+
+  SDL_Rect temp = {x,y,w,h};
+  src_rect = new SDL_Rect(temp);
+}
+
 
 /**
  * @brief Set the texture for the sprite.

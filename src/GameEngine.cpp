@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL_image.h>
 #include "../include/GameEngine.hpp"
+#include "../include/Sprite.hpp"
 
 /**
  * @brief Startup SDL and initialize window/renderer variables.
@@ -70,18 +71,25 @@ SDL_Texture * GameEngine::load_texture(std::string path) {
  */
 int GameEngine::present_start_menu() {
 
-  SDL_Texture * menu_background_texture = load_texture("./assets/menu_background.png");
-  SDL_Texture * new_game_button_selected = load_texture("./assets/new_game_button_selected.png");
-  SDL_Texture * new_game_button_unselected = load_texture("./assets/new_game_button_unselected.png");
-  SDL_Texture * continue_button_selected = load_texture("./assets/continue_button_selected.png");
-  SDL_Texture * continue_button_unselected = load_texture("./assets/continue_button_unselected.png");
-  SDL_Texture * exit_game_button_selected = load_texture("./assets/exit_game_button_selected.png");
-  SDL_Texture * exit_game_button_unselected = load_texture("./assets/exit_game_button_unselected.png");
 
-  SDL_Rect new_game_button_rect = {220,100,220,60};
-  SDL_Rect continue_button_rect = {220,200,220,60};
-  SDL_Rect exit_game_button_rect = {220,300,220,60};
+  Sprite menu_background;
+  Sprite new_game_button;
+  Sprite continue_game_button;
+  Sprite exit_game_button;
 
+  menu_background.set_texture(load_texture("./assets/menu_background.png"));
+  new_game_button.set_texture(load_texture("./assets/new_game_button.png"));
+  continue_game_button.set_texture(load_texture("./assets/continue_button.png"));
+  exit_game_button.set_texture(load_texture("./assets/exit_game_button.png"));
+
+  new_game_button.set_dst_rect(220,100,220,60);
+  continue_game_button.set_dst_rect(220,200,220,60);
+  exit_game_button.set_dst_rect(220,300,220,60);
+
+  new_game_button.set_src_rect(0,60,220,60);
+  continue_game_button.set_src_rect(0,0,220,60);
+  exit_game_button.set_src_rect(0,0,220,60);
+ 
   int selected = MENU_NEW;
 
   SDL_Event e;
@@ -112,31 +120,33 @@ int GameEngine::present_start_menu() {
       }
     }
 
-    SDL_RenderClear(game_renderer);
-    SDL_RenderCopy(game_renderer, menu_background_texture, NULL, NULL);
-
     switch(selected) {
       case MENU_NEW:
-        SDL_RenderCopy(game_renderer, new_game_button_selected, NULL, &new_game_button_rect);
-        SDL_RenderCopy(game_renderer, continue_button_unselected, NULL, &continue_button_rect);
-        SDL_RenderCopy(game_renderer, exit_game_button_unselected, NULL, &exit_game_button_rect);
+        new_game_button.set_src_rect(0,60,220,60);
+        continue_game_button.set_src_rect(0,0,220,60);
+        exit_game_button.set_src_rect(0,0,220,60);
         break;
       case MENU_CONTINUE:
-        SDL_RenderCopy(game_renderer, new_game_button_unselected, NULL, &new_game_button_rect);
-        SDL_RenderCopy(game_renderer, continue_button_selected, NULL, &continue_button_rect);
-        SDL_RenderCopy(game_renderer, exit_game_button_unselected, NULL, &exit_game_button_rect);
+        new_game_button.set_src_rect(0,0,220,60);
+        continue_game_button.set_src_rect(0,60,220,60);
+        exit_game_button.set_src_rect(0,0,220,60);
         break;
       case MENU_EXIT:
-        SDL_RenderCopy(game_renderer, new_game_button_unselected, NULL, &new_game_button_rect);
-        SDL_RenderCopy(game_renderer, continue_button_unselected, NULL, &continue_button_rect);
-        SDL_RenderCopy(game_renderer, exit_game_button_selected, NULL, &exit_game_button_rect);
+        new_game_button.set_src_rect(0,0,220,60);
+        continue_game_button.set_src_rect(0,0,220,60);
+        exit_game_button.set_src_rect(0,60,220,60);
         break;
     }
 
+    SDL_RenderClear(game_renderer);
+
+    menu_background.render(game_renderer);
+    new_game_button.render(game_renderer);
+    continue_game_button.render(game_renderer);
+    exit_game_button.render(game_renderer);
+
     SDL_RenderPresent(game_renderer);
   }
-
-  SDL_DestroyTexture(menu_background_texture);
 
   return selected;
 }
